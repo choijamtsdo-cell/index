@@ -1,27 +1,540 @@
 <!doctype html>
 <html lang="mn">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>NOMIN — Борлуулалт, үлдэгдлийн нэгдсэн тайлан</title>
-  <meta http-equiv="refresh" content="0; url=https://script.google.com/macros/s/AKfycbyz5HiydHePeuGElPV9sjzt40VluCqcvOILhY_tjnAToMQ9vCoJnCB0RGfsBJpabf8i_A/exec">
-  <script>
-    window.location.replace('https://script.google.com/macros/s/AKfycbyz5HiydHePeuGElPV9sjzt40VluCqcvOILhY_tjnAToMQ9vCoJnCB0RGfsBJpabf8i_A/exec');
-  </script>
-  <style>
-    body {
-      margin:0; min-height:100vh; display:grid; place-items:center;
-      background:#07111f; color:#eaf2fb; font-family:Inter,Segoe UI,Arial,sans-serif;
-    }
-    .box { text-align:center; padding:32px; max-width:520px; }
-    a { color:#8fc5ff; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>NOMIN Standard — Борлуулалт, үлдэгдлийн нэгдсэн тайлан</title>
+<style>
+:root{
+  --bg:#06101d;--panel:#0c1a2b;--panel2:#10233a;--line:#203b57;--text:#edf5fc;
+  --muted:#8fa6bd;--blue:#3b82f6;--cyan:#22d3ee;--green:#34d399;--orange:#f59e0b;
+  --red:#fb7185;--violet:#a78bfa;--shadow:0 16px 50px rgba(0,0,0,.22)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:
+radial-gradient(circle at 13% 5%,#123a66 0,transparent 30%),
+linear-gradient(145deg,#050b14,#091523 50%,#07101d);color:var(--text);min-height:100vh}
+.hidden{display:none!important}.app{max-width:1540px;margin:auto;padding:22px}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login{width:min(430px,100%);background:rgba(13,27,45,.96);border:1px solid #24415f;border-radius:22px;padding:34px;box-shadow:0 25px 80px #0008}
+.brandline{font-weight:800;letter-spacing:.08em;color:#8fc5ff;font-size:13px}
+.login h1{font-size:28px;margin:10px 0 8px}.login p{color:var(--muted);line-height:1.55}
+input,select,button{font:inherit}.pw{width:100%;padding:14px 15px;border-radius:11px;border:1px solid #294660;background:#071321;color:#fff;outline:none}
+.btn{border:0;border-radius:11px;padding:11px 14px;font-weight:700;cursor:pointer;background:#2563eb;color:#fff}
+.login .btn{width:100%;margin-top:12px;padding:14px}.err{color:var(--red);font-size:13px;min-height:18px;margin-top:8px}
+.top{display:flex;gap:18px;justify-content:space-between;align-items:flex-end;margin-bottom:14px}
+.top h1{margin:4px 0;font-size:29px}.subtitle{color:var(--muted)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.badge{border:1px solid #245383;background:#0b2036;border-radius:999px;padding:8px 12px;color:#9ed1ff;font-size:12px}
+.badge.live{border-color:#166534;color:#86efac;background:#052e1a}.badge.warn{border-color:#854d0e;color:#fcd34d;background:#2b1c05}
+.tabs{display:flex;gap:8px;margin:15px 0}.tab{padding:10px 14px;border:1px solid #28445f;color:#91a8bd;border-radius:10px;background:#0a1726;cursor:pointer;font-weight:700}.tab.active{background:#153a61;color:white;border-color:#2e6da8}
+.filters{display:grid;grid-template-columns:1.4fr repeat(5,minmax(125px,1fr));gap:10px;background:rgba(13,27,45,.82);border:1px solid #1d3650;border-radius:16px;padding:14px;margin-bottom:14px}
+.invfilters{grid-template-columns:1.5fr repeat(3,minmax(150px,1fr)) auto}
+.control label{display:block;font-size:11px;color:#8da5bc;margin:0 0 6px 2px}.control input,.control select{width:100%;height:41px;border:1px solid #28445f;background:#081421;color:#eaf2fb;border-radius:9px;padding:0 10px}
+.actions{display:flex;gap:8px;align-items:end}.ghost{background:#11253a;border:1px solid #28445f;color:#c9dbec}
+.kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin:12px 0 16px}.kpi{background:linear-gradient(180deg,#10233a,#0b1929);border:1px solid #1f3954;border-radius:16px;padding:15px;min-height:104px;box-shadow:var(--shadow)}
+.kpi .l{font-size:11px;color:#8ea5bd;text-transform:uppercase;letter-spacing:.05em}.kpi .v{font-size:22px;font-weight:800;margin:9px 0 5px}.kpi .s{font-size:11px;color:#7891aa}
+.grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.card{background:rgba(13,27,45,.88);border:1px solid #1d3650;border-radius:16px;padding:15px;min-height:300px;box-shadow:var(--shadow)}.card h3{font-size:14px;margin:0 0 13px;color:#d7e6f5}.svgchart{width:100%;height:255px;display:block}.gridline{stroke:#1b3047;stroke-width:1}.lbl{fill:#8fa6bc;font-size:10px}
+.rank{display:flex;flex-direction:column;gap:9px}.rrow{display:grid;grid-template-columns:minmax(90px,1.2fr) 2.8fr 90px;gap:9px;align-items:center;font-size:11px}.track{height:8px;background:#132a42;border-radius:999px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#2563eb,#22d3ee);border-radius:999px}.fill.inv{background:linear-gradient(90deg,#7c3aed,#22d3ee)}.amt{text-align:right;color:#d6e5f3}
+.table-card{margin-top:12px;background:rgba(13,27,45,.88);border:1px solid #1d3650;border-radius:16px;padding:15px;box-shadow:var(--shadow)}.table-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.table-head h3{margin:0;font-size:14px}
+.tblwrap{overflow:auto;max-height:540px;border:1px solid #193047;border-radius:11px}table{width:100%;border-collapse:collapse;min-width:1050px;font-size:12px}th{position:sticky;top:0;background:#122943;color:#a9bfd4;text-align:left;padding:10px;border-bottom:1px solid #28455f;z-index:2}td{padding:9px 10px;border-bottom:1px solid #142a40;color:#dce8f3}tr:hover td{background:#10243a}.num{text-align:right}.pos{color:#77e3b2}.neg{color:#ff8fa3}.warntext{color:#fcd34d}
+.footer{color:#6e879f;font-size:11px;margin:13px 2px 4px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.note{padding:11px 13px;border-radius:12px;border:1px solid #29445f;background:#0b1b2b;color:#9eb4c9;font-size:12px;margin:0 0 12px}
+@media(max-width:1150px){.filters{grid-template-columns:repeat(3,1fr)}.invfilters{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(4,1fr)}.grid2,.grid3{grid-template-columns:1fr}}
+@media(max-width:650px){.app{padding:14px}.top{align-items:flex-start;flex-direction:column}.badges{justify-content:flex-start}.filters,.invfilters{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.kpi .v{font-size:18px}.rrow{grid-template-columns:1.3fr 2fr 80px}}
+
+.compare-kpis{grid-template-columns:repeat(6,1fr)}
+.status{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+.status.fast{background:#073b2c;color:#86efac;border:1px solid #166534}
+.status.normal{background:#0c2f4c;color:#93c5fd;border:1px solid #1d4ed8}
+.status.slow{background:#3b2608;color:#fcd34d;border:1px solid #a16207}
+.status.risk{background:#3f1018;color:#fda4af;border:1px solid #be123c}
+.status.nodata{background:#202b38;color:#cbd5e1;border:1px solid #475569}
+.alert-list{display:flex;flex-direction:column;gap:8px}
+.alert-item{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:10px;align-items:center;padding:9px 10px;border-bottom:1px solid #18324b;font-size:12px}
+.mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.metricline{display:grid;grid-template-columns:1.3fr .9fr .9fr .7fr;gap:10px;padding:8px 0;border-bottom:1px solid #193047;font-size:12px}
+.metricline.head{color:#8fa6bc;font-weight:700}
+@media(max-width:1150px){.compare-kpis{grid-template-columns:repeat(3,1fr)}.mini-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.compare-kpis{grid-template-columns:1fr 1fr}.alert-item,.metricline{grid-template-columns:1fr}.metricline.head{display:none}}
+
+
+.detail-status{padding:10px 12px;border:1px solid #29445f;background:#0b1b2b;border-radius:10px;color:#9eb4c9;font-size:12px;margin-bottom:12px}
+.detail-status.ok{border-color:#166534;color:#86efac;background:#052e1a}
+.detail-status.err{border-color:#7f1d1d;color:#fda4af;background:#2b0a0f}
+@media(max-width:1150px){.detail-kpis{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:650px){.detail-kpis{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-  <div class="box">
-    <h2>Борлуулалт, үлдэгдлийн нэгдсэн тайлан</h2>
-    <p>LIVE dashboard руу шилжүүлж байна...</p>
-    <p><a href="https://script.google.com/macros/s/AKfycbyz5HiydHePeuGElPV9sjzt40VluCqcvOILhY_tjnAToMQ9vCoJnCB0RGfsBJpabf8i_A/exec">Автоматаар шилжихгүй бол энд дарна уу</a></p>
+<section id="login" class="login-wrap">
+  <div class="login">
+    <div class="brandline">NOMIN STANDARD</div>
+    <h1>Dashboard нэвтрэх</h1>
+    <p>Борлуулалт болон барааны үлдэгдлийн dashboard харахын тулд нууц үгээ оруулна уу.</p>
+    <input id="pw" class="pw" type="password" placeholder="Нууц үг оруулах" autocomplete="current-password">
+    <button class="btn" id="loginBtn">Нэвтрэх</button>
+    <div class="err" id="err"></div>
   </div>
+</section>
+
+<main id="app" class="app hidden">
+  <div class="top">
+    <div><div class="brandline">NOMIN STANDARD</div><h1>Борлуулалт, үлдэгдлийн нэгдсэн тайлан</h1><div class="subtitle">Борлуулалт · Үлдэгдэл · Брэнд · Суваг · Менежерийн нэгдсэн хяналтийн нэгдсэн хяналт</div></div>
+    <div class="badges"><div class="badge">Sales: 2026-08-18</div><div class="badge">Google Sheet ID холбогдсон</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-view="salesView">📈 Борлуулалт</button>
+    <button class="tab" data-view="inventoryView">📦 Үлдэгдэл</button>
+    <button class="tab" data-view="compareView">⚖️ Борлуулалт vs Үлдэгдэл</button>
+    <button class="tab" data-view="detailView">🏬 Бараа × Салбар</button>
+  </div>
+
+  <section id="salesView">
+    <section class="filters">
+      <div class="control"><label>Бараа / код / хайлт</label><input id="search" placeholder="Ж: Kendo, 1053122, обой..."></div>
+      <div class="control"><label>Эхлэх огноо</label><input id="dateFrom" type="date"></div>
+      <div class="control"><label>Дуусах огноо</label><input id="dateTo" type="date"></div>
+      <div class="control"><label>Суваг / салбар</label><select id="channel"></select></div>
+      <div class="control"><label>Брэнд</label><select id="brand"></select></div>
+      <div class="control"><label>Ангилал</label><select id="category"></select></div>
+      <div class="control"><label>Импорт менежер</label><select id="manager"></select></div>
+      <div class="control"><label>Эрэмбэлэх</label><select id="sort"><option value="amountDesc">Борлуулалт ↓</option><option value="amountAsc">Борлуулалт ↑</option><option value="qtyDesc">Тоо ↓</option><option value="name">Нэр A–Я</option></select></div>
+      <div class="actions"><button class="btn ghost" id="reset">Reset</button><button class="btn" id="csv">CSV</button></div>
+    </section>
+    <section class="kpis">
+      <div class="kpi"><div class="l">Цэвэр борлуулалт</div><div class="v" id="kNet">0 ₮</div><div class="s">буцаалт хассан</div></div>
+      <div class="kpi"><div class="l">Нийт борлуулалт</div><div class="v" id="kGross">0 ₮</div><div class="s">эерэг борлуулалт</div></div>
+      <div class="kpi"><div class="l">Буцаалт</div><div class="v" id="kReturn">0 ₮</div><div class="s" id="kReturnPct">0%</div></div>
+      <div class="kpi"><div class="l">Борлуулсан тоо</div><div class="v" id="kQty">0</div><div class="s">ширхэг / м.кв / нэгж</div></div>
+      <div class="kpi"><div class="l">Баримтын тоо</div><div class="v" id="kDocs">0</div><div class="s">unique document</div></div>
+      <div class="kpi"><div class="l">Дундаж баримт</div><div class="v" id="kAvg">0 ₮</div><div class="s">net / document</div></div>
+      <div class="kpi"><div class="l">Илэрсэн мөр</div><div class="v" id="kRows">0</div><div class="s">шүүлтүүрийн үр дүн</div></div>
+    </section>
+    <section class="grid2"><div class="card"><h3>Өдрийн борлуулалтын trend</h3><svg id="trend" class="svgchart"></svg></div><div class="card"><h3>Top брэнд</h3><div id="brandRank" class="rank"></div></div></section>
+    <section class="grid3"><div class="card"><h3>Top суваг / салбар</h3><div id="channelRank" class="rank"></div></div><div class="card"><h3>Top ангилал</h3><div id="categoryRank" class="rank"></div></div><div class="card"><h3>Борлуулалтын менежерүүд</h3><div id="managerRank" class="rank"></div></div></section>
+
+    <section class="mini-grid">
+      <div class="card">
+        <h3>Сүүлийн 7 хоногийн борлуулалтын trend</h3>
+        <div id="sevenDaySummary" class="subtitle" style="margin-bottom:10px"></div>
+        <svg id="sevenTrend" class="svgchart"></svg>
+      </div>
+      <div class="card">
+        <h3>Буцаалт өндөртэй брэнд</h3>
+        <div id="returnBrandRank" class="rank"></div>
+      </div>
+    </section>
+    <section class="grid2" style="margin-top:12px">
+      <div class="card"><h3>Салбарын гүйцэтгэл</h3><div id="branchPerfRank" class="rank"></div></div>
+      <div class="card"><h3>Анхаарах брэндүүд</h3><div id="salesWatchList" class="alert-list"></div></div>
+    </section>
+
+    <section class="table-card"><div class="table-head"><h3>Top бүтээгдэхүүн / шүүлтүүрийн үр дүн</h3><span id="tableMeta" class="subtitle"></span></div><div class="tblwrap"><table><thead><tr><th>SKU</th><th>Бүтээгдэхүүн</th><th>Брэнд</th><th>Ангилал</th><th>Суваг</th><th>Менежер</th><th class="num">Тоо</th><th class="num">Борлуулалт</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
+  </section>
+
+  <section id="inventoryView" class="hidden">
+    <div class="note">Үлдэгдлийн эх дата нь брэнд + үндсэн ангиллын түвшинд байна. SKU/салбарын үлдэгдлийн дата нэмэгдвэл энэ хэсгийг бараа, салбараар задлах боломжтой.</div>
+    <section class="filters invfilters">
+      <div class="control"><label>Брэнд хайх</label><input id="invSearch" placeholder="Ж: Grohe, Kendo, Kerama..."></div>
+      <div class="control"><label>Ангилал</label><select id="invCategory"></select></div>
+      <div class="control"><label>Менежер</label><select id="invManager"></select></div>
+      <div class="control"><label>Эрэмбэлэх</label><select id="invSort"><option value="amountDesc">Үлдэгдэл ↓</option><option value="amountAsc">Үлдэгдэл ↑</option><option value="salesDesc">Борлуулалт ↓</option><option value="brand">Брэнд A–Я</option></select></div>
+      <div class="actions"><button class="btn ghost" id="invReset">Reset</button><button class="btn" id="invCsv">CSV</button></div>
+    </section>
+    <section class="kpis">
+      <div class="kpi"><div class="l">Нийт үлдэгдэл</div><div class="v" id="iTotal">0 ₮</div><div class="s">одоогийн дата</div></div>
+      <div class="kpi"><div class="l">Брэндийн тоо</div><div class="v" id="iBrands">0</div><div class="s">filter-д</div></div>
+      <div class="kpi"><div class="l">Ангиллын тоо</div><div class="v" id="iCats">0</div><div class="s">filter-д</div></div>
+      <div class="kpi"><div class="l">Сөрөг үлдэгдэл</div><div class="v" id="iNeg">0</div><div class="s">брэнд</div></div>
+      <div class="kpi"><div class="l">TOP брэнд</div><div class="v" id="iTopBrand">-</div><div class="s" id="iTopBrandAmt">0 ₮</div></div>
+      <div class="kpi"><div class="l">Борлуулалттай мөр</div><div class="v" id="iSalesRows">0</div><div class="s">харьцуулалттай</div></div>
+      <div class="kpi"><div class="l">Үлдэгдэл / Борлуулалт</div><div class="v" id="iRatio">-</div><div class="s">зөвхөн sales-тэй мөр</div></div>
+    </section>
+    <section class="grid3">
+      <div class="card"><h3>Top үлдэгдэлтэй брэнд</h3><div id="invBrandRank" class="rank"></div></div>
+      <div class="card"><h3>Ангиллаар үлдэгдэл</h3><div id="invCategoryRank" class="rank"></div></div>
+      <div class="card"><h3>Менежерээр үлдэгдэл</h3><div id="invManagerRank" class="rank"></div></div>
+    </section>
+    <section class="table-card"><div class="table-head"><h3>Үлдэгдлийн дэлгэрэнгүй</h3><span id="invTableMeta" class="subtitle"></span></div><div class="tblwrap"><table><thead><tr><th>Ангилал</th><th>Брэнд</th><th>Менежер</th><th class="num">Үлдэгдэл</th><th class="num">Борлуулалт</th><th class="num">Үлдэгдэл / Борлуулалт</th></tr></thead><tbody id="invBody"></tbody></table></div></section>
+  </section>
+
+
+  <section id="compareView" class="hidden">
+    <div class="note">
+      Борлуулалт ба үлдэгдлийг нэг брэнд дээр харьцуулсан хэсэг. <b>Үлдэгдэл / Борлуулалтын харьцаа өндөр</b> байх тусам нөөц их, эргэлт удаан байж болзошгүй.
+    </div>
+
+    <section class="filters invfilters">
+      <div class="control"><label>Брэнд хайх</label><input id="cmpSearch" placeholder="Ж: Kendo, Grohe..."></div>
+      <div class="control"><label>Ангилал</label><select id="cmpCategory"></select></div>
+      <div class="control"><label>Менежер</label><select id="cmpManager"></select></div>
+      <div class="control"><label>Статус</label>
+        <select id="cmpStatus">
+          <option value="">Бүх статус</option>
+          <option value="fast">Хурдан эргэлт</option>
+          <option value="normal">Хэвийн</option>
+          <option value="slow">Удаан эргэлт</option>
+          <option value="risk">Анхаарах</option>
+        </select>
+      </div>
+      <div class="actions"><button class="btn ghost" id="cmpReset">Reset</button><button class="btn" id="cmpCsv">CSV</button></div>
+    </section>
+
+    <section class="kpis compare-kpis">
+      <div class="kpi"><div class="l">Нийт борлуулалт</div><div class="v" id="cSales">0 ₮</div><div class="s">сонгосон брэндүүд</div></div>
+      <div class="kpi"><div class="l">Нийт үлдэгдэл</div><div class="v" id="cInv">0 ₮</div><div class="s">сонгосон брэндүүд</div></div>
+      <div class="kpi"><div class="l">Дундаж харьцаа</div><div class="v" id="cRatio">-</div><div class="s">Үлдэгдэл / Борлуулалт</div></div>
+      <div class="kpi"><div class="l">Хурдан эргэлт</div><div class="v" id="cFast">0</div><div class="s">брэнд</div></div>
+      <div class="kpi"><div class="l">Удаан эргэлт</div><div class="v" id="cSlow">0</div><div class="s">брэнд</div></div>
+      <div class="kpi"><div class="l">Анхаарах</div><div class="v" id="cRisk">0</div><div class="s">борлуулалтгүй үлдэгдэлтэй</div></div>
+    </section>
+
+    <section class="grid3">
+      <div class="card"><h3>Хурдан эргэлттэй брэнд</h3><div id="fastRank" class="rank"></div></div>
+      <div class="card"><h3>Удаан эргэлттэй брэнд</h3><div id="slowRank" class="rank"></div></div>
+      <div class="card"><h3>Буцаалт өндөртэй брэнд</h3><div id="cmpReturnRank" class="rank"></div></div>
+    </section>
+
+    <section class="grid2" style="margin-top:12px">
+      <div class="card">
+        <h3>Ангиллын нэгдсэн харьцуулалт</h3>
+        <div class="metricline head"><span>Ангилал</span><span>Борлуулалт</span><span>Үлдэгдэл</span><span>Харьцаа</span></div>
+        <div id="categoryCompare"></div>
+      </div>
+      <div class="card">
+        <h3>Импорт менежерийн нэгдсэн үзүүлэлт</h3>
+        <div class="metricline head"><span>Менежер</span><span>Борлуулалт</span><span>Үлдэгдэл</span><span>Харьцаа</span></div>
+        <div id="managerCompare"></div>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <div class="table-head"><h3>Брэндийн нэгдсэн хүснэгт</h3><span id="cmpMeta" class="subtitle"></span></div>
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th>Брэнд</th><th>Ангилал</th><th>Менежер</th><th class="num">Борлуулалт</th><th class="num">Үлдэгдэл</th><th class="num">Харьцаа</th><th class="num">Буцаалт %</th><th>Статус</th></tr></thead>
+          <tbody id="cmpBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+
+  <section id="detailView" class="hidden">
+    <div id="detailStatus" class="detail-status">Нарийвчилсан үлдэгдлийг салбарын эх Sheet-ээс ачаална.</div>
+    <section class="filters invfilters">
+      <div class="control"><label>Бараа / SKU хайх</label><input id="detSearch" placeholder="Ж: 1054548, метр, Kendo..."></div>
+      <div class="control"><label>Брэнд</label><select id="detBrand"></select></div>
+      <div class="control"><label>Салбар / агуулах</label><select id="detBranch"></select></div>
+      <div class="control"><label>Материалын бүлэг</label><select id="detGroup"></select></div>
+      <div class="actions"><button class="btn ghost" id="detReset">Reset</button><button class="btn" id="detCsv">CSV</button></div>
+    </section>
+
+    <section class="kpis detail-kpis">
+      <div class="kpi"><div class="l">Илэрсэн SKU</div><div class="v" id="dSku">0</div><div class="s">unique material</div></div>
+      <div class="kpi"><div class="l">Салбарын тоо</div><div class="v" id="dBranches">0</div><div class="s">filter-д</div></div>
+      <div class="kpi"><div class="l">Салбар дахь тоо</div><div class="v" id="dQty">0</div><div class="s">нийлбэр</div></div>
+      <div class="kpi"><div class="l">Зөрүүтэй тоо</div><div class="v" id="dDiff">0</div><div class="s">тодорхойгүй байршил</div></div>
+      <div class="kpi"><div class="l">Брэнд</div><div class="v" id="dBrands">0</div><div class="s">filter-д</div></div>
+      <div class="kpi"><div class="l">Мөр</div><div class="v" id="dRows">0</div><div class="s">бараа × салбар</div></div>
+    </section>
+
+    <section class="grid2">
+      <div class="card"><h3>Хамгийн их үлдэгдэлтэй салбар / агуулах</h3><div id="detailBranchRank" class="rank"></div></div>
+      <div class="card"><h3>Брэндээр үлдэгдлийн тоо</h3><div id="detailBrandRank" class="rank"></div></div>
+    </section>
+
+    <section class="table-card">
+      <div class="table-head"><h3>Ямар бараа аль салбарт байгаа вэ?</h3><span id="detailMeta" class="subtitle"></span></div>
+      <div class="tblwrap">
+        <table>
+          <thead><tr><th>SKU</th><th>Барааны нэр</th><th>Брэнд</th><th>Материалын бүлэг</th><th>Салбар / агуулах</th><th class="num">Салбар дахь тоо</th><th class="num">SKU нийт тоо</th><th class="num">SKU үлдэгдлийн дүн</th></tr></thead>
+          <tbody id="detailBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <div class="footer"><span>Google Sheet live source · Apps Script Web App</span><span>Нууц үг server-side шалгагдана</span></div>
+</main>
+
+<script>
+let ROWS=[],META={},INVENTORY=[],COMPARE=[],RATIO_P25=0,RATIO_P75=0,DETAIL=[],DETAIL_META={},DETAIL_LOADED=false,CURRENT_PASSWORD="";
+const GOOGLE_SHEET_ID="1x0Yz85jxvtMuuPJvYcuyFsSosskcXyyOYP2TfzclaRA";
+const $=s=>document.querySelector(s);
+const money=n=>new Intl.NumberFormat('mn-MN',{maximumFractionDigits:0}).format(n)+" ₮";
+const num=n=>new Intl.NumberFormat('mn-MN',{maximumFractionDigits:1}).format(n);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+
+function fillSelect(id,arr,label){
+  const el=$(id); el.innerHTML=`<option value="">${label}</option>`+arr.map(x=>`<option>${esc(x)}</option>`).join("");
+}
+function login(){
+  const pw=$("#pw").value;
+  $("#loginBtn").disabled=true;
+  $("#loginBtn").textContent="Дата ачаалж байна...";
+  $("#err").textContent="";
+  google.script.run
+    .withSuccessHandler(data=>{
+      initLiveData(data);
+      $("#login").classList.add("hidden");
+      $("#app").classList.remove("hidden");
+      $("#loginBtn").disabled=false;
+      $("#loginBtn").textContent="Нэвтрэх";
+    })
+    .withFailureHandler(err=>{
+      $("#err").textContent=(err&&err.message)?err.message:"Дата ачаалж чадсангүй.";
+      $("#loginBtn").disabled=false;
+      $("#loginBtn").textContent="Нэвтрэх";
+    })
+    .verifyPasswordAndLoad(pw);
+}
+$("#loginBtn").onclick=login;
+$("#pw").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+
+function initLiveData(data){
+  ROWS=data.sales||[];
+  INVENTORY=data.inventory||[];
+  META=data.meta||{};
+
+  fillSelect("#brand",META.brands||[],"Бүх брэнд");
+  fillSelect("#category",META.categories||[],"Бүх ангилал");
+  fillSelect("#channel",META.channels||[],"Бүх суваг");
+  fillSelect("#manager",META.managers||[],"Бүх менежер");
+  fillSelect("#invCategory",META.inventoryCategories||[],"Бүх ангилал");
+  fillSelect("#invManager",META.inventoryManagers||[],"Бүх менежер");
+  fillSelect("#cmpCategory",META.inventoryCategories||[],"Бүх ангилал");
+  fillSelect("#cmpManager",META.inventoryManagers||[],"Бүх менежер");
+  $("#dateFrom").value=META.minDate||"";
+  $("#dateTo").value=META.maxDate||"";
+
+  computeRatioThresholds();
+  COMPARE=buildCompareRows();
+
+  const badge=document.querySelector(".badge");
+  if(data.refreshedAt){
+    const badges=document.querySelectorAll(".badge");
+    if(badges.length) badges[badges.length-1].textContent="Шинэчилсэн: "+data.refreshedAt;
+  }
+  renderSales();
+  renderInventory();
+  renderCompare();
+}
+
+function computeRatioThresholds(){
+  const salesBy=new Map();
+  for(const r of ROWS){
+    const k=String(r.brand||"").trim().toLowerCase();
+    salesBy.set(k,(salesBy.get(k)||0)+(Number(r.amount)||0));
+  }
+  const vals=INVENTORY.map(r=>{
+    const s=salesBy.get(String(r.brand||"").trim().toLowerCase())||0;
+    return s>0 && Number(r.amount)>=0 ? Number(r.amount)/s : null;
+  }).filter(v=>v!==null&&isFinite(v)).sort((a,b)=>a-b);
+  const q=p=>{
+    if(!vals.length) return 0;
+    const pos=(vals.length-1)*p,lo=Math.floor(pos),hi=Math.ceil(pos);
+    return lo===hi?vals[lo]:vals[lo]*(hi-pos)+vals[hi]*(pos-lo);
+  };
+  RATIO_P25=q(.25);
+  RATIO_P75=q(.75);
+}
+
+document.querySelectorAll(".tab[data-view]").forEach(btn=>btn.onclick=()=>{
+  document.querySelectorAll(".tab[data-view]").forEach(x=>x.classList.toggle("active",x===btn));
+  ["salesView","inventoryView","compareView","detailView"].forEach(id=>$("#"+id).classList.toggle("hidden",id!==btn.dataset.view));
+  if(btn.dataset.view==="detailView"&&!DETAIL_LOADED) loadInventoryDetail();
+});
+
+function filteredSales(){
+ const q=$("#search").value.trim().toLowerCase(),df=$("#dateFrom").value,dt=$("#dateTo").value,b=$("#brand").value,c=$("#category").value,ch=$("#channel").value,m=$("#manager").value;
+ return ROWS.filter(r=>(!df||r.date>=df)&&(!dt||r.date<=dt)&&(!b||r.brand===b)&&(!c||r.category===c)&&(!ch||r.channel===ch)&&(!m||r.manager===m)&&(!q||[r.code,r.product,r.brand,r.category,r.channel,r.manager,r.doc].some(x=>String(x).toLowerCase().includes(q))));
+}
+function group(rows,key,valueKey="amount"){
+ const m=new Map();for(const r of rows)m.set(r[key]||"Тодорхойгүй",(m.get(r[key]||"Тодорхойгүй")||0)+(Number(r[valueKey])||0));return [...m].sort((a,b)=>b[1]-a[1]);
+}
+function rank(el,items,n=10,inventory=false){
+ const a=items.slice(0,n),mx=Math.max(1,...a.map(x=>Math.max(0,x[1])));
+ $(el).innerHTML=a.length?a.map(([k,v])=>`<div class="rrow"><div title="${esc(k)}">${esc(k)}</div><div class="track"><div class="fill ${inventory?"inv":""}" style="width:${Math.max(1,Math.max(0,v)/mx*100)}%"></div></div><div class="amt">${money(v)}</div></div>`).join(""):`<div class="subtitle">Дата байхгүй</div>`;
+}
+function trend(rows){
+ const m=new Map();for(const r of rows)m.set(r.date,(m.get(r.date)||0)+r.amount);const a=[...m].sort((x,y)=>x[0].localeCompare(y[0])),svg=$("#trend"),W=800,H=255,p={l:58,r:16,t:12,b:34};svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+ if(!a.length){svg.innerHTML="";return}
+ const vals=a.map(x=>x[1]),min=Math.min(0,...vals),max=Math.max(1,...vals),span=max-min||1,x=i=>p.l+(a.length===1?0:(W-p.l-p.r)*i/(a.length-1)),y=v=>p.t+(H-p.t-p.b)*(1-(v-min)/span);
+ let s="";for(let j=0;j<5;j++){let yy=p.t+(H-p.t-p.b)*j/4,val=max-span*j/4;s+=`<line class="gridline" x1="${p.l}" y1="${yy}" x2="${W-p.r}" y2="${yy}"/><text class="lbl" x="${p.l-7}" y="${yy+3}" text-anchor="end">${Math.round(val/1e6)}M</text>`}
+ s+=`<polyline fill="none" stroke="#22d3ee" stroke-width="3" points="${a.map((d,i)=>`${x(i)},${y(d[1])}`).join(" ")}"/>`;
+ a.forEach((d,i)=>{s+=`<circle cx="${x(i)}" cy="${y(d[1])}" r="3.2" fill="#3b82f6"><title>${d[0]}: ${money(d[1])}</title></circle>`;if(i===0||i===a.length-1||i%Math.ceil(a.length/6)===0)s+=`<text class="lbl" x="${x(i)}" y="${H-10}" text-anchor="middle">${d[0].slice(5)}</text>`});svg.innerHTML=s;
+}
+function productAgg(rows){
+ const m=new Map();for(const r of rows){const k=[r.code,r.product,r.brand,r.category,r.channel,r.manager].join("||"),o=m.get(k)||{code:r.code,product:r.product,brand:r.brand,category:r.category,channel:r.channel,manager:r.manager,qty:0,amount:0};o.qty+=r.qty;o.amount+=r.amount;m.set(k,o)}return [...m.values()];
+}
+function renderSales(){
+ const rows=filteredSales(),gross=rows.filter(r=>r.amount>0).reduce((s,r)=>s+r.amount,0),ret=-rows.filter(r=>r.amount<0).reduce((s,r)=>s+r.amount,0),net=rows.reduce((s,r)=>s+r.amount,0),qty=rows.reduce((s,r)=>s+r.qty,0),docs=new Set(rows.map(r=>r.doc).filter(Boolean)).size;
+ $("#kNet").textContent=money(net);$("#kGross").textContent=money(gross);$("#kReturn").textContent=money(ret);$("#kReturnPct").textContent=(gross?ret/gross*100:0).toFixed(1)+"% of gross";$("#kQty").textContent=num(qty);$("#kDocs").textContent=num(docs);$("#kAvg").textContent=money(docs?net/docs:0);$("#kRows").textContent=num(rows.length);
+ trend(rows);rank("#brandRank",group(rows,"brand"));rank("#channelRank",group(rows,"channel"));rank("#categoryRank",group(rows,"category"));rank("#managerRank",group(rows,"manager"));
+ let p=productAgg(rows),sort=$("#sort").value;
+ p.sort(sort==="amountAsc"?(a,b)=>a.amount-b.amount:sort==="qtyDesc"?(a,b)=>b.qty-a.qty:sort==="name"?(a,b)=>a.product.localeCompare(b.product):(a,b)=>b.amount-a.amount);
+ const shown=p.slice(0,200);$("#tbody").innerHTML=shown.map(r=>`<tr><td>${esc(r.code)}</td><td>${esc(r.product)}</td><td>${esc(r.brand)}</td><td>${esc(r.category)}</td><td>${esc(r.channel)}</td><td>${esc(r.manager)}</td><td class="num">${num(r.qty)}</td><td class="num ${r.amount<0?"neg":"pos"}">${money(r.amount)}</td></tr>`).join("");
+ $("#tableMeta").textContent=`${p.length} бүтээгдэхүүн · ${rows.length} мөр${p.length>200?" · эхний 200-г харуулав":""}`;
+ renderSalesInsights(rows);
+}
+["search","dateFrom","dateTo","channel","brand","category","manager","sort"].forEach(id=>$("#"+id).addEventListener(id==="search"?"input":"change",renderSales));
+$("#reset").onclick=()=>{$("#search").value="";$("#dateFrom").value=META.minDate;$("#dateTo").value=META.maxDate;["channel","brand","category","manager"].forEach(x=>$("#"+x).value="");$("#sort").value="amountDesc";renderSales()};
+$("#csv").onclick=()=>downloadCsv("filtered_sales.csv",["Date","Document","SKU","Product","Brand","Category","Channel","Manager","Qty","Net Sales"],filteredSales().map(r=>[r.date,r.doc,r.code,r.product,r.brand,r.category,r.channel,r.manager,r.qty,r.amount]));
+
+function filteredInventory(){
+ const q=$("#invSearch").value.trim().toLowerCase(),c=$("#invCategory").value,m=$("#invManager").value;
+ return INVENTORY.filter(r=>(!q||[r.brand,r.category,r.manager].some(x=>String(x).toLowerCase().includes(q)))&&(!c||r.category===c)&&(!m||r.manager===m));
+}
+function renderInventory(){
+ let rows=filteredInventory(),sort=$("#invSort").value;
+ rows=[...rows].sort(sort==="amountAsc"?(a,b)=>a.amount-b.amount:sort==="salesDesc"?(a,b)=>b.sales-a.sales:sort==="brand"?(a,b)=>a.brand.localeCompare(b.brand):(a,b)=>b.amount-a.amount);
+ const total=rows.reduce((s,r)=>s+r.amount,0),cats=new Set(rows.map(r=>r.category)).size,neg=rows.filter(r=>r.amount<0).length,withSales=rows.filter(r=>r.sales>0),salesTotal=withSales.reduce((s,r)=>s+r.sales,0),invWithSales=withSales.reduce((s,r)=>s+r.amount,0);
+ $("#iTotal").textContent=money(total);$("#iBrands").textContent=num(rows.length);$("#iCats").textContent=num(cats);$("#iNeg").textContent=num(neg);
+ $("#iTopBrand").textContent=rows[0]?.brand||"-";$("#iTopBrandAmt").textContent=rows[0]?money(rows[0].amount):"0 ₮";$("#iSalesRows").textContent=num(withSales.length);$("#iRatio").textContent=salesTotal?(invWithSales/salesTotal).toFixed(1)+"x":"-";
+ rank("#invBrandRank",group(rows,"brand","amount"),10,true);rank("#invCategoryRank",group(rows,"category","amount"),10,true);rank("#invManagerRank",group(rows.filter(r=>r.manager),"manager","amount"),10,true);
+ $("#invBody").innerHTML=rows.map(r=>{const ratio=r.sales>0?r.amount/r.sales:null;return `<tr><td>${esc(r.category)}</td><td>${esc(r.brand)}</td><td>${esc(r.manager||"-")}</td><td class="num ${r.amount<0?"neg":"pos"}">${money(r.amount)}</td><td class="num">${r.sales?money(r.sales):"-"}</td><td class="num ${ratio&&ratio>20?"warntext":""}">${ratio?ratio.toFixed(1)+"x":"-"}</td></tr>`}).join("");
+ $("#invTableMeta").textContent=`${rows.length} брэнд · ${money(total)}`;
+}
+["invSearch","invCategory","invManager","invSort"].forEach(id=>$("#"+id).addEventListener(id==="invSearch"?"input":"change",renderInventory));
+$("#invReset").onclick=()=>{$("#invSearch").value="";$("#invCategory").value="";$("#invManager").value="";$("#invSort").value="amountDesc";renderInventory()};
+$("#invCsv").onclick=()=>{const rows=filteredInventory();downloadCsv("inventory.csv",["Category","Brand","Manager","Inventory","Sales","Inventory/Sales"],rows.map(r=>[r.category,r.brand,r.manager,r.amount,r.sales,r.sales?r.amount/r.sales:""]))};
+
+
+function loadInventoryDetail(){
+  $("#detailStatus").className="detail-status";
+  $("#detailStatus").textContent="Нарийвчилсан үлдэгдэл ачаалж байна...";
+  google.script.run
+    .withSuccessHandler(data=>{
+      DETAIL=data.rows||[];
+      DETAIL_META=data.meta||{};
+      DETAIL_LOADED=true;
+      fillSelect("#detBrand",DETAIL_META.brands||[],"Бүх брэнд");
+      fillSelect("#detBranch",DETAIL_META.branches||[],"Бүх салбар / агуулах");
+      fillSelect("#detGroup",DETAIL_META.groups||[],"Бүх материалын бүлэг");
+      $("#detailStatus").className="detail-status ok";
+      $("#detailStatus").textContent=`LIVE нарийвчилсан үлдэгдэл ачааллаа · ${DETAIL.length} бараа×салбар мөр · ${data.refreshedAt||""}`;
+      renderInventoryDetail();
+    })
+    .withFailureHandler(err=>{
+      $("#detailStatus").className="detail-status err";
+      $("#detailStatus").textContent=(err&&err.message)?err.message:"Нарийвчилсан үлдэгдэл ачаалж чадсангүй.";
+    })
+    .verifyPasswordAndLoadInventoryDetail(CURRENT_PASSWORD);
+}
+function filteredDetail(){
+  const q=$("#detSearch").value.trim().toLowerCase(),b=$("#detBrand").value,br=$("#detBranch").value,g=$("#detGroup").value;
+  return DETAIL.filter(r=>(!q||[r.code,r.product,r.brand,r.group,r.branch].some(x=>String(x).toLowerCase().includes(q)))&&(!b||r.brand===b)&&(!br||r.branch===br)&&(!g||r.group===g));
+}
+function renderInventoryDetail(){
+  const rows=filteredDetail(),sku=new Set(rows.map(r=>r.code)),branches=new Set(rows.map(r=>r.branch)),brands=new Set(rows.map(r=>r.brand));
+  const qty=rows.reduce((s,r)=>s+(Number(r.qty)||0),0),diff=rows.filter(r=>r.branch==="Тодорхойгүй / зөрүү").reduce((s,r)=>s+(Number(r.qty)||0),0);
+  $("#dSku").textContent=num(sku.size);$("#dBranches").textContent=num(branches.size);$("#dQty").textContent=num(qty);$("#dDiff").textContent=num(diff);$("#dBrands").textContent=num(brands.size);$("#dRows").textContent=num(rows.length);
+  rank("#detailBranchRank",group(rows,"branch","qty"),12);
+  rank("#detailBrandRank",group(rows,"brand","qty"),12);
+  const sorted=[...rows].sort((a,b)=>Math.abs(b.qty)-Math.abs(a.qty));
+  $("#detailBody").innerHTML=sorted.slice(0,500).map(r=>`<tr><td>${esc(r.code)}</td><td>${esc(r.product)}</td><td>${esc(r.brand)}</td><td>${esc(r.group)}</td><td>${esc(r.branch)}</td><td class="num ${r.qty<0?"neg":"pos"}">${num(r.qty)}</td><td class="num">${num(r.totalQty)}</td><td class="num">${money(r.totalAmount)}</td></tr>`).join("");
+  $("#detailMeta").textContent=`${rows.length} мөр · ${sku.size} SKU${rows.length>500?" · эхний 500-г харуулав":""}`;
+}
+["detSearch","detBrand","detBranch","detGroup"].forEach(id=>$("#"+id).addEventListener(id==="detSearch"?"input":"change",()=>{if(DETAIL_LOADED)renderInventoryDetail()}));
+$("#detReset").onclick=()=>{$("#detSearch").value="";$("#detBrand").value="";$("#detBranch").value="";$("#detGroup").value="";renderInventoryDetail()};
+$("#detCsv").onclick=()=>{const rows=filteredDetail();downloadCsv("inventory_by_branch.csv",["SKU","Product","Brand","Material Group","Branch","Branch Qty","SKU Total Qty","SKU Inventory Amount"],rows.map(r=>[r.code,r.product,r.brand,r.group,r.branch,r.qty,r.totalQty,r.totalAmount]))};
+
+function downloadCsv(name,head,rows){
+ const csv=[head,...rows].map(a=>a.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");
+ const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);
+}
+
+function drawMiniTrend(svgId,pairs){
+ const svg=$(svgId),W=760,H=240,p={l:54,r:14,t:12,b:34};svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+ if(!pairs.length){svg.innerHTML="";return}
+ const vals=pairs.map(x=>x[1]),min=Math.min(0,...vals),max=Math.max(1,...vals),span=max-min||1;
+ const x=i=>p.l+(pairs.length===1?0:(W-p.l-p.r)*i/(pairs.length-1)),y=v=>p.t+(H-p.t-p.b)*(1-(v-min)/span);
+ let out="";
+ for(let j=0;j<4;j++){let yy=p.t+(H-p.t-p.b)*j/3,val=max-span*j/3;out+=`<line class="gridline" x1="${p.l}" y1="${yy}" x2="${W-p.r}" y2="${yy}"/><text class="lbl" x="${p.l-6}" y="${yy+3}" text-anchor="end">${Math.round(val/1e6)}M</text>`}
+ out+=`<polyline fill="none" stroke="#34d399" stroke-width="3" points="${pairs.map((d,i)=>`${x(i)},${y(d[1])}`).join(" ")}"/>`;
+ pairs.forEach((d,i)=>{out+=`<circle cx="${x(i)}" cy="${y(d[1])}" r="3.5" fill="#22d3ee"><title>${d[0]}: ${money(d[1])}</title></circle><text class="lbl" x="${x(i)}" y="${H-10}" text-anchor="middle">${d[0].slice(5)}</text>`});
+ svg.innerHTML=out;
+}
+function renderSalesInsights(rows){
+ const dm=new Map();for(const r of rows)dm.set(r.date,(dm.get(r.date)||0)+r.amount);
+ const daily=[...dm].sort((a,b)=>a[0].localeCompare(b[0])),last7=daily.slice(-7),prev7=daily.slice(-14,-7);
+ const lastSum=last7.reduce((a,x)=>a+x[1],0),prevSum=prev7.reduce((a,x)=>a+x[1],0);
+ const chg=prevSum?((lastSum-prevSum)/Math.abs(prevSum))*100:null;
+ $("#sevenDaySummary").textContent=prev7.length?`Сүүлийн 7 хоног: ${money(lastSum)} · өмнөх 7 хоногоос ${chg>=0?"+":""}${chg.toFixed(1)}%`:`Сүүлийн ${last7.length} өдөр: ${money(lastSum)}`;
+ drawMiniTrend("#sevenTrend",last7);
+
+ const ret=new Map(),gross=new Map();
+ for(const r of rows){const b=r.brand||"Тодорхойгүй";if(r.amount<0)ret.set(b,(ret.get(b)||0)+(-r.amount));else gross.set(b,(gross.get(b)||0)+r.amount)}
+ const rr=[...ret].map(([b,v])=>[b,gross.get(b)?v/gross.get(b)*100:0]).sort((a,b)=>b[1]-a[1]).slice(0,10),mx=Math.max(1,...rr.map(x=>x[1]));
+ $("#returnBrandRank").innerHTML=rr.length?rr.map(([b,p])=>`<div class="rrow"><div>${esc(b)}</div><div class="track"><div class="fill" style="width:${Math.max(1,p/mx*100)}%;background:linear-gradient(90deg,#be123c,#fb7185)"></div></div><div class="amt">${p.toFixed(1)}%</div></div>`).join(""):`<div class="subtitle">Буцаалт байхгүй</div>`;
+
+ rank("#branchPerfRank",group(rows,"channel"),10);
+
+ const salesByBrand=new Map(group(rows,"brand")),invMap=new Map(INVENTORY.map(x=>[String(x.brand).trim().toLowerCase(),x.amount]));
+ const watch=[];
+ salesByBrand.forEach((v,b)=>{const inv=invMap.get(String(b).trim().toLowerCase())||0;if(v<=0&&inv>0)watch.push({b,reason:"Борлуулалтгүй / сөрөг",sales:v,inv});else if(v>0&&inv/v>=RATIO_P75)watch.push({b,reason:"Үлдэгдэл өндөр",sales:v,inv})});
+ $("#salesWatchList").innerHTML=watch.length?watch.sort((a,b)=>b.inv-a.inv).slice(0,8).map(x=>`<div class="alert-item"><b>${esc(x.b)}</b><span>${x.reason}</span><span>${money(x.inv)}</span></div>`).join(""):`<div class="subtitle">Онцгой анхаарах брэнд алга</div>`;
+}
+
+function buildCompareRows(){
+ const salesBy=new Map(),retBy=new Map(),grossBy=new Map(),metaBy=new Map();
+ for(const r of ROWS){
+   const k=String(r.brand||"Тодорхойгүй").trim().toLowerCase();
+   salesBy.set(k,(salesBy.get(k)||0)+r.amount);
+   if(r.amount<0)retBy.set(k,(retBy.get(k)||0)+(-r.amount));else grossBy.set(k,(grossBy.get(k)||0)+r.amount);
+   if(!metaBy.has(k))metaBy.set(k,{brand:r.brand||"Тодорхойгүй",category:r.category||"",manager:r.manager||""});
+ }
+ const invBy=new Map(INVENTORY.map(x=>[String(x.brand).trim().toLowerCase(),x]));
+ const keys=new Set([...salesBy.keys(),...invBy.keys()]);
+ return [...keys].map(k=>{
+   const im=invBy.get(k),sm=metaBy.get(k)||{},sales=salesBy.get(k)||0,inventory=im?im.amount:0,gross=grossBy.get(k)||0,ret=retBy.get(k)||0,ratio=sales>0?inventory/sales:null;
+   let status="normal";
+   if(sales<=0&&inventory>0)status="risk";
+   else if(ratio===null)status="nodata";
+   else if(ratio<=RATIO_P25)status="fast";
+   else if(ratio>=RATIO_P75)status="slow";
+   return {brand:(im&&im.brand)||sm.brand||k,category:(im&&im.category)||sm.category||"",manager:(im&&im.manager)||sm.manager||"",sales,inventory,ratio,returnPct:gross?ret/gross:0,status};
+ });
+}
+
+function statusText(s){return s==="fast"?"Хурдан эргэлт":s==="slow"?"Удаан эргэлт":s==="risk"?"Анхаарах":s==="normal"?"Хэвийн":"Дата дутуу"}
+function filteredCompare(){
+ const q=$("#cmpSearch").value.trim().toLowerCase(),c=$("#cmpCategory").value,m=$("#cmpManager").value,st=$("#cmpStatus").value;
+ return COMPARE.filter(r=>(!q||[r.brand,r.category,r.manager].some(x=>String(x).toLowerCase().includes(q)))&&(!c||r.category===c)&&(!m||r.manager===m)&&(!st||r.status===st));
+}
+function renderCombinedList(el,rows,key){
+ const sm=new Map(),im=new Map();
+ for(const r of rows){const k=r[key]||"Тодорхойгүй";sm.set(k,(sm.get(k)||0)+r.sales);im.set(k,(im.get(k)||0)+r.inventory)}
+ const arr=[...new Set([...sm.keys(),...im.keys()])].map(k=>[k,sm.get(k)||0,im.get(k)||0]).sort((a,b)=>b[2]-a[2]).slice(0,12);
+ $(el).innerHTML=arr.map(([k,sv,iv])=>`<div class="metricline"><span>${esc(k)}</span><span>${money(sv)}</span><span>${money(iv)}</span><span>${sv>0?(iv/sv).toFixed(1)+"x":"-"}</span></div>`).join("");
+}
+function renderCompare(){
+ const rows=filteredCompare(),sales=rows.reduce((a,r)=>a+r.sales,0),inv=rows.reduce((a,r)=>a+r.inventory,0),withRatio=rows.filter(r=>r.ratio!==null&&isFinite(r.ratio));
+ const avg=withRatio.length?withRatio.reduce((a,r)=>a+r.ratio,0)/withRatio.length:null;
+ $("#cSales").textContent=money(sales);$("#cInv").textContent=money(inv);$("#cRatio").textContent=avg!==null?avg.toFixed(1)+"x":"-";
+ $("#cFast").textContent=rows.filter(r=>r.status==="fast").length;$("#cSlow").textContent=rows.filter(r=>r.status==="slow").length;$("#cRisk").textContent=rows.filter(r=>r.status==="risk").length;
+
+ const fast=rows.filter(r=>r.status==="fast"&&r.sales>0).sort((a,b)=>(a.ratio??999)-(b.ratio??999)).slice(0,10).map(r=>[r.brand,r.sales]);
+ const slow=rows.filter(r=>r.status==="slow"&&r.sales>0).sort((a,b)=>(b.ratio??0)-(a.ratio??0)).slice(0,10).map(r=>[r.brand,r.inventory]);
+ rank("#fastRank",fast,10);rank("#slowRank",slow,10,true);
+
+ const rr=rows.filter(r=>r.returnPct>0).sort((a,b)=>b.returnPct-a.returnPct).slice(0,10),mx=Math.max(1,...rr.map(r=>r.returnPct));
+ $("#cmpReturnRank").innerHTML=rr.length?rr.map(r=>`<div class="rrow"><div>${esc(r.brand)}</div><div class="track"><div class="fill" style="width:${Math.max(1,r.returnPct/mx*100)}%;background:linear-gradient(90deg,#be123c,#fb7185)"></div></div><div class="amt">${(r.returnPct*100).toFixed(1)}%</div></div>`).join(""):`<div class="subtitle">Буцаалт байхгүй</div>`;
+
+ renderCombinedList("#categoryCompare",rows,"category");renderCombinedList("#managerCompare",rows,"manager");
+ const sorted=[...rows].sort((a,b)=>b.inventory-a.inventory);
+ $("#cmpBody").innerHTML=sorted.map(r=>`<tr><td>${esc(r.brand)}</td><td>${esc(r.category||"-")}</td><td>${esc(r.manager||"-")}</td><td class="num">${money(r.sales)}</td><td class="num">${money(r.inventory)}</td><td class="num">${r.ratio!==null&&isFinite(r.ratio)?r.ratio.toFixed(1)+"x":"-"}</td><td class="num">${(r.returnPct*100).toFixed(1)}%</td><td><span class="status ${r.status}">${statusText(r.status)}</span></td></tr>`).join("");
+ $("#cmpMeta").textContent=`${rows.length} брэнд · Борлуулалт ${money(sales)} · Үлдэгдэл ${money(inv)}`;
+}
+["cmpSearch","cmpCategory","cmpManager","cmpStatus"].forEach(id=>$("#"+id).addEventListener(id==="cmpSearch"?"input":"change",renderCompare));
+$("#cmpReset").onclick=()=>{$("#cmpSearch").value="";$("#cmpCategory").value="";$("#cmpManager").value="";$("#cmpStatus").value="";renderCompare()};
+$("#cmpCsv").onclick=()=>{const rows=filteredCompare();downloadCsv("sales_vs_inventory.csv",["Brand","Category","Manager","Sales","Inventory","Inventory/Sales","Return %","Status"],rows.map(r=>[r.brand,r.category,r.manager,r.sales,r.inventory,r.ratio??"",r.returnPct,statusText(r.status)]))};
+
+
+</script>
 </body>
 </html>
